@@ -76,7 +76,7 @@ flowchart LR
 You need Node.js 20+ and Docker.
 
 ```bash
-git clone https://github.com/<your-username>/sift.git
+git clone https://github.com/jiaamarnani/sift.git
 cd sift
 npm install
 

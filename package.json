@@ -3,15 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "AI inbox triage service: polls Gmail, filters junk with rules, scores with an LLM (Gemini or Ollama), notifies via Telegram + daily digest.",
+  "description": "AI inbox triage pipeline: rule filter plus LLM scoring (Gemini or Ollama) on a BullMQ worker with retries, rate limiting, dead-letter, and idempotency.",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "tsx watch src/api/server.ts",
     "dev:worker": "tsx watch src/worker/main.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/api/server.js",
     "start:worker": "node dist/worker/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate",
@@ -25,12 +23,9 @@
     "demo": "tsx src/demo/main.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.71.0",
     "bullmq": "^5.34.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.45.3",
-    "fastify": "^5.2.0",
-    "googleapis": "^182.0.0",
     "ioredis": "^5.4.2",
     "pg": "^8.13.1",
     "pino": "^9.6.0",
