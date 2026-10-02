@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sifter-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sifter
+      POSTGRES_PASSWORD: sifter
+      POSTGRES_DB: sifter
+    ports:
+      - "5433:5432" # 5433 on the host so it never collides with a local Postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # Migrations and tests wait on this, so `docker compose up -d --wait` is reliable.
+      test: ["CMD-SHELL", "pg_isready -U sifter -d sifter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: sifter-redis
+    restart: unless-stopped
+    # BullMQ requires keyspace eviction to be OFF: if Redis evicts job hashes
+    # under memory pressure, jobs silently vanish instead of failing loudly.
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
+  redis-data:
