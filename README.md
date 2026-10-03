@@ -1,8 +1,7 @@
 # Sift
 
-An AI inbox triage service. Sift takes incoming email, drops obvious junk with cheap deterministic rules, asks an LLM to score what's left from 1 to 10 against your own criteria, and stores the result in Postgres. Scoring runs through a Redis-backed job queue with retries, backoff, rate limiting, and a dead-letter table.
-
-It's built for a specific inbox: a CS student looking for co-ops who also does freelance work. Your criteria live in a database row, though, so the same pipeline works for any definition of "important".
+An AI inbox triage service!
+Sift takes incoming email, drops obvious junk with cheap deterministic rules, asks an LLM to score what's left from 1 to 10 against your own criteria, and stores the result in Postgres. Scoring runs through a Redis-backed job queue with retries, backoff, rate limiting, and a dead-letter table.
 
 ```
 $ npm run demo
